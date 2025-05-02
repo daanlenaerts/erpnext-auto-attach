@@ -76,6 +76,8 @@ async function getAllFilesRecursive(dir: string): Promise<string[]> {
   for (const entry of entries) {
     // Skip hidden files and directories
     if (entry.startsWith('.')) continue;
+    // Skip entries starting with a _
+    if (entry.startsWith('_')) continue;
     const fullPath = path.join(dir, entry);
     const entryStat = await stat(fullPath);
     if (entryStat.isDirectory()) {

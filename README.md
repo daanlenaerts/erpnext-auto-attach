@@ -13,6 +13,7 @@ A simple CLI tool to automatically attach documents to ERPNext by watching a dir
 - Watches a specified directory and its subdirectories for new files
 - Automatically uploads and attaches new files to a specified ERPNext DocType, based on the filename
 - Prevents duplicate uploads by tracking already attached files (in a sqlite database called `erpnext-auto-attach.db`, stored in the current working directory)
+- Files and directories starting with a dot (`.`) or underscore (`_`) are ignored
 
 ## Installation
 ERPNext Documents Export is distributed as a binary executable, which you can download below.
