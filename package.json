@@ -2,7 +2,7 @@
   "name": "erpnext-auto-attach",
   "module": "index.ts",
   "type": "module",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "devDependencies": {
     "@types/bun": "latest"
   },

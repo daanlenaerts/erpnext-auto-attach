@@ -59,9 +59,9 @@ program
             registerSuccessfulUpload(filePath, absoluteDir, doctype, name);
             uploadedSet.add(filePath);
             console.log(`Uploaded ${filePath} to ${doctype}`);
-          } catch (e) {
+          } catch (e: any) {
             console.error(`Failed to upload ${filePath} to ${doctype}`);
-            console.error(e);
+            console.error(e.message);
             registerFailedUpload(filePath, absoluteDir, doctype, name);
           }
         }
