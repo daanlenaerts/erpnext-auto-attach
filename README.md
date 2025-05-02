@@ -12,6 +12,9 @@ A simple CLI tool to automatically attach documents to ERPNext by watching a dir
 ## Why?
 Manually attaching documents to ERPNext can be tedious and error-prone. This tool automates the process, ensuring all files in a directory are attached to your chosen DocType, saving time and reducing mistakes.
 
+> [!NOTE]
+> Also looking for an easy way to export documents from ERPNext? Check out [erpnext-documents-export](https://github.com/daanlenaerts/erpnext-documents-export)!
+
 ## Installation
 ERPNext Documents Export is distributed as a binary executable, which you can download below.
 Alternatively you can run it with Bun directly.
