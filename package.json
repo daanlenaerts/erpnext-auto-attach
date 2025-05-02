@@ -1,0 +1,16 @@
+{
+  "name": "erpnext-auto-attach",
+  "module": "index.ts",
+  "type": "module",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "dayjs": "^1.11.13"
+  }
+}
