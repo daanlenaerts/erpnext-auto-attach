@@ -11,6 +11,19 @@ export interface UploadAttachmentOptions {
 }
 
 export async function uploadAttachment(opts: UploadAttachmentOptions) {
+    // Check if the document exists first
+    const docUrl = `${opts.url}/api/resource/${opts.doctype}/${opts.name}`;
+    const checkRes = await fetch(docUrl, {
+        method: 'GET',
+        headers: {
+            Authorization: 'Basic ' + Buffer.from(`${opts.key}:${opts.secret}`).toString('base64')
+        }
+    });
+    if (!checkRes.ok) {
+        const body = await checkRes.text();
+        throw new Error(`Document ${opts.doctype} ${opts.name} does not exist or cannot be fetched: ${body}`);
+    }
+
     const formData = new FormData();
     const filename = path.basename(opts.filename);
     formData.append('file', opts.file, filename);

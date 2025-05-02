@@ -2,7 +2,7 @@ import { Command } from "commander";
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { uploadAttachment } from "./controllers/upload-attachment";
-import { getUploadedPathsForDir, registerUpload } from "./controllers/db";
+import { getSuccessfullyUploadedPathsForDir, registerSuccessfulUpload, getFailedCount, registerFailedUpload } from "./controllers/db";
 
 const program = new Command();
 
@@ -22,13 +22,20 @@ program
     const absoluteDir = path.resolve(dir);
 
     // Prefetch uploaded file paths for the watched directory
-    let uploadedSet = getUploadedPathsForDir(absoluteDir);
+    let uploadedSet = getSuccessfullyUploadedPathsForDir(absoluteDir);
     while (true) {
       try {
         // Recursively get all files in the directory and subdirectories
         const files = await getAllFilesRecursive(absoluteDir);
         for (const filePath of files) {
           if (uploadedSet.has(filePath)) continue;
+
+          // Check failed count before attempting upload
+          const failedCount = getFailedCount(filePath);
+          if (failedCount >= 3) {
+            console.log(`Skipping ${filePath} (failed ${failedCount} times)`);
+            continue;
+          }
 
           // Clean the filename by taking the first part of the filename before the first space (if present)
           const file = path.basename(filePath);
@@ -49,12 +56,13 @@ program
               filename: filePath,
             });
             // Register upload and update the set
-            registerUpload(filePath, absoluteDir, doctype, name);
+            registerSuccessfulUpload(filePath, absoluteDir, doctype, name);
             uploadedSet.add(filePath);
             console.log(`Uploaded ${filePath} to ${doctype}`);
           } catch (e) {
             console.error(`Failed to upload ${filePath} to ${doctype}`);
             console.error(e);
+            registerFailedUpload(filePath, absoluteDir, doctype, name);
           }
         }
       } catch (e) {
